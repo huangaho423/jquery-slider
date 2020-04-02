@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>carousel</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+      crossorigin="anonymous"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0/css/all.min.css"
+    />
+    <style>
+      /* slider-wrapper */
+      .slider-wrapper {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 40vw;
+        max-height: 500px;
+        min-height: 300px;
+        background: #ddd;
+        overflow: hidden;
+      }
+
+      .slider-wrapper ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* slider-img */
+      ul.slider-img {
+        display: flex;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        transition: 0.5s;
+      }
+
+      ul.slider-img li {
+        flex: 1 0 100%;
+      }
+
+      ul.slider-img li img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      /* slider-arrow */
+      ul.slider-arrow {
+        position: relative;
+        color: #fff;
+        font-size: 2rem;
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+        width: 100%;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+      }
+
+      @media screen and (min-width: 768px) {
+        ul.slider-arrow {
+          font-size: 2.5rem;
+        }
+      }
+
+      ul.slider-arrow li {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        height: 100%;
+        padding: 0 15px;
+        opacity: 0.4;
+        transition: 0.5s;
+      }
+
+      ul.slider-arrow li:hover {
+        opacity: 1;
+      }
+
+      /* slider-dot */
+      .slider-dot {
+        position: absolute;
+        bottom: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+        width: 100%;
+        color: #fff;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+      }
+
+      .slider-dot li {
+        cursor: pointer;
+        margin: 0 8px;
+        font-size: 0.6rem;
+        opacity: 0.4;
+      }
+
+      .slider-dot li.active {
+        opacity: 1;
+      }
+
+      @media screen and (min-width: 768px) {
+        .slider-dot li {
+          margin: 0 12px;
+          font-size: 0.95rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="slider-wrapper" id="slider">
+        <ul class="slider-img">
+          <li>
+            <img
+              src="https://cdn.pixabay.com/photo/2020/02/29/22/43/frankfurt-4891300_960_720.jpg"
+              alt=""
+            />
+          </li>
+          <li>
+            <img
+              src="https://cdn.pixabay.com/photo/2020/02/27/20/57/dresden-4885833_960_720.jpg"
+              alt=""
+            />
+          </li>
+          <li>
+            <img
+              src="https://cdn.pixabay.com/photo/2015/11/18/16/03/valencia-1049389_960_720.jpg"
+              alt=""
+            />
+          </li>
+          <li>
+            <img
+              src="https://cdn.pixabay.com/photo/2020/01/11/20/57/berlin-4758687_960_720.jpg"
+              alt=""
+            />
+          </li>
+          <li>
+            <img
+              src="https://cdn.pixabay.com/photo/2020/02/27/17/17/building-4885295_960_720.jpg"
+              alt=""
+            />
+          </li>
+          <li>
+            <img
+              src="https://cdn.pixabay.com/photo/2020/02/23/12/22/isanbul-4873198_960_720.jpg"
+              alt=""
+            />
+          </li>
+        </ul>
+      </div>
+    </div>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+      integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+      integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      //圖片張數
+      let sliderCount = $("#slider").find(".slider-img li img").length;
+      //定義圖片區域變數
+      let sliderImg = $("#slider").find(".slider-img");
+      //定義切換箭頭按鈕
+      let sliderArrow = `<ul class="slider-arrow"><li class="arrow-left" role="button"><i class="fas fa-chevron-left"></i></li><li class="arrow-right" role="button"><i class="fas fa-chevron-right"></i></li></ul>`;
+      //定義切換圓點
+      let sliderDotLi = "";
+      for (let i = 0; i < sliderCount; i++) {
+        sliderDotLi += `<li><i class="fas fa-circle"></i></li>`;
+      }
+      let sliderDot = `<ul class="slider-dot">${sliderDotLi}</ul>`;
+      $("#slider").append(sliderArrow + sliderDot);
+
+      //判斷有無active在html
+      let activeDefaultCount = $(".slider-dot li.active").length;
+      if (activeDefaultCount != 1) {
+        $(".slider-dot li")
+          .removeClass()
+          .eq(0)
+          .addClass("active");
+      }
+
+      //目前dot狀態為active的位置
+      let sliderIndex = $(".slider-dot li.active").index();
+      sliderImg.css("left", -sliderIndex * 100 + "%");
+
+      //切換slider
+      function sliderPos() {
+        sliderImg.css("left", -sliderIndex * 100 + "%");
+        $(".slider-dot li")
+          .removeClass()
+          .eq(sliderIndex)
+          .addClass("active");
+      }
+
+      $(".arrow-right").click(function() {
+        sliderIndex >= sliderCount - 1 ? (sliderIndex = 0) : sliderIndex++;
+        sliderPos();
+      });
+
+      $(".arrow-left").click(function() {
+        sliderIndex <= 0 ? (sliderIndex = sliderCount - 1) : sliderIndex--;
+        sliderPos();
+      });
+
+      $(".slider-dot li").click(function() {
+        sliderIndex = $(this).index();
+        sliderPos();
+      });
+
+      let goSlider = setInterval(() => {
+        $(".arrow-right").click();
+      }, 3000);
+
+      $("#slider").on({
+        mouseenter: () => {
+          clearInterval(goSlider);
+        },
+        mouseleave: () => {
+          goSlider = setInterval(() => {
+            $(".arrow-right").click();
+          }, 3000);
+        }
+      });
+    </script>
+  </body>
+</html>
